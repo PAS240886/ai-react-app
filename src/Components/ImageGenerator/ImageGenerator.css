@@ -65,3 +65,22 @@
     background: rgba(183, 6, 133, 0.672);
     cursor: pointer;
 }
+
+.loading-bar{
+    width: 0px;
+    height: 8px;
+    background:rgba(183, 6, 133, 0.672);
+}
+.loading-text{
+    font-size: 18px;
+}
+
+.loading-bar-full{
+    width: 486px;
+    height: 8px;
+    background:rgba(183, 6, 133, 0.672);
+    transition: 15s;
+}
+.display-none{
+    display:none;
+}

@@ -7,12 +7,31 @@ const ImageGenerator = () => {
 
     const [image_url, setImage_url] = useState('/');
     let inputRef = useRef(null);
+    const [loading, setLoading] = useState(false)
+    
 
-    const ImageGenerator = async () => {
+    const imageGenerator = async () => {
         if (inputRef===''){
             return 0;
         }
-        return 0;
+        setLoading(true)
+        const response = await fetch ('https://api.openai.com/v1/images/generations', {
+            method: 'POST',
+            headers:{
+                'Content-Type':'application/json',
+                Authorization:'Bearer sk-oe8GBbdb0WiQ50VQj5as5T3BlbkFJHOY4uSGd2UKCTTzfL1xX',
+                'User-Agent':'Chrome',
+            },
+            body:JSON.stringify({
+                promt: `${inputRef.current.value}`,
+                n:1,
+                size:'486x486',
+            }),
+        });
+        let data = await  response.json();
+        let data_array = data.data;
+        setImage_url(data_array[0].url)
+        setLoading(false)
     }
 
 
@@ -20,11 +39,15 @@ const ImageGenerator = () => {
     <div className='ai-image-generator'>
         <div className='header'>AI IMAGE <span>GENERATOR</span></div>
         <div className='img-loading'>
-            <div className='image'><img src={image_url==='/'?default_image:image_url}></img></div>
+            <div className='image'><img alt='' src={image_url==='/'?default_image:image_url}></img></div>
+            <div className='loading'>
+                <div className={loading?'loading-bar-full':'loading-bar'}></div>
+                <div className={loading?'loading-text':'display-none'}>loading...</div>
+            </div>
         </div>
       <div className='search-box'>
         <input type='text' ref={inputRef} className='search-input' placeholder='Describe What You Want To See'></input>
-        <div className='generate-btn'>Generate</div>
+        <div className='generate-btn' onClick={()=>{imageGenerator()}}>Generate</div>
       </div>
     </div>
   )
